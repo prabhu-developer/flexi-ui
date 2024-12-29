@@ -3,9 +3,10 @@ import { LucideIcon } from 'lucide-react'
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   icon?: LucideIcon
   label?: string
+  error?: string // Add error prop to handle validation errors
 }
 
-export function Input({ icon: Icon, label, className = '', ...props }: InputProps) {
+export function Input({ icon: Icon, label, error, className = '', ...props }: InputProps) {
   return (
     <div>
       {label && (
@@ -21,7 +22,7 @@ export function Input({ icon: Icon, label, className = '', ...props }: InputProp
         )}
         <input
           className={`
-            block w-full rounded-lg border border-gray-300 dark:border-gray-600
+            block w-full rounded-lg border ${error ? 'border-red-500' : 'border-gray-300'} dark:${error ? 'border-red-500' : 'border-gray-600'}
             bg-white dark:bg-gray-700 
             text-gray-900 dark:text-white
             focus:ring-2 focus:ring-primary-500 focus:border-primary-500
@@ -33,6 +34,7 @@ export function Input({ icon: Icon, label, className = '', ...props }: InputProp
           {...props}
         />
       </div>
+      {error && <p className="mt-1 text-xs text-red-500">{error}</p>} {/* Display error message */}
     </div>
   )
 }
