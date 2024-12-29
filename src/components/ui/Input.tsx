@@ -3,7 +3,7 @@ import { LucideIcon } from 'lucide-react'
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   icon?: LucideIcon
   label?: string
-  error?: string | undefined // Add error prop to handle validation errors
+  error?: any // Add error prop to handle validation errors
 }
 
 export function Input({ icon: Icon, label, error, className = '', ...props }: InputProps) {
