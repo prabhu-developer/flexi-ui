@@ -49,7 +49,7 @@ export default function RegisterPage() {
             placeholder="Full name"
             {...register('name')}
             required
-            error={errors.name?.message}
+            error={errors?.name?.message}
           />
         </div>
         <div>
@@ -59,7 +59,7 @@ export default function RegisterPage() {
             placeholder="Email address"
             {...register('email')}
             required
-            error={errors.email?.message}
+            error={errors?.email?.message}
           />
         </div>
         <div>
@@ -69,7 +69,7 @@ export default function RegisterPage() {
             placeholder="Password"
             {...register('password')}
             required
-            error={errors.password?.message}
+            error={errors?.password?.message}
           />
         </div>
         <Button type="submit" className="w-full">
