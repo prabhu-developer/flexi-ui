@@ -1,20 +1,39 @@
 'use client';
 
-import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import { Mail, Lock, User } from 'lucide-react';
 import { AuthLayout } from '@/components/layouts/AuthLayout';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import Link from 'next/link';
 
-export default function RegisterPage() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+// Define your validation schema with Yup
+const schema = yup.object({
+  name: yup.string().required('Full name is required'),
+  email: yup
+    .string()
+    .email('Invalid email address')
+    .required('Email is required'),
+  password: yup
+    .string()
+    .min(8, 'Password must be at least 8 characters')
+    .required('Password is required'),
+}).required();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // TODO: Implement registration logic
+export default function RegisterPage() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const onSubmit = (data: any) => {
+    // Handle the form submission logic
+    console.log('Form Data:', data);
   };
 
   return (
@@ -22,31 +41,37 @@ export default function RegisterPage() {
       title="Create an account"
       subtitle="Start your freelancing journey"
     >
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <Input
-          icon={User}
-          type="text"
-          placeholder="Full name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <Input
-          icon={Mail}
-          type="email"
-          placeholder="Email address"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <Input
-          icon={Lock}
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <div>
+          <Input
+            icon={User}
+            type="text"
+            placeholder="Full name"
+            {...register('name')}
+            required
+            error={errors.name?.message}
+          />
+        </div>
+        <div>
+          <Input
+            icon={Mail}
+            type="email"
+            placeholder="Email address"
+            {...register('email')}
+            required
+            error={errors.email?.message}
+          />
+        </div>
+        <div>
+          <Input
+            icon={Lock}
+            type="password"
+            placeholder="Password"
+            {...register('password')}
+            required
+            error={errors.password?.message}
+          />
+        </div>
         <Button type="submit" className="w-full">
           Create account
         </Button>
